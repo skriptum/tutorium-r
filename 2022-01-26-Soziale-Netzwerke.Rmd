@@ -1,0 +1,118 @@
+# 26.01.22 Soziale Netzwerkanalyse
+
+## Imports
+
+```{r include=FALSE}
+library(tidyverse)
+library(network)
+library(sna)
+library(networkD3)
+library(igraph)
+```
+
+## Read in the Data from online Resource
+
+```{r}
+# df <- read_csv("https://github.com/tdenzl/MarvelNetwork/raw/main/data/hero-network.csv")
+# write_csv(df, "data/hero_network.csv")
+```
+
+Read in from */data* after first step
+
+```{r}
+hero_network <- read_csv("data/hero_network.csv")
+```
+
+## Tidying + Desc
+
+```{r}
+hero_network <- hero_network %>% 
+  mutate(hero1 = str_to_lower(hero1), hero2 = str_to_lower(hero2))
+
+hero_network %>% 
+  count(hero1,hero2, sort= T) %>% 
+  rename(weight = n) %>%
+  head()
+```
+
+## Network Creation
+
+```{r}
+skip.gram.count <- hero_network %>% 
+  count(hero1,hero2, sort= T) %>% 
+  rename(weight = n)
+
+treshold <- 50
+
+network <- skip.gram.count %>% 
+  filter(weight >= treshold) %>% 
+  graph_from_data_frame(directed = F)
+
+V(network)$cluster <- clusters(graph = network)$membership
+
+cc.network <- induced_subgraph(
+  graph = network, 
+  vids = which( 
+    V(network)$cluster == which.max(clusters(graph=network)$csize)
+    )
+  )
+
+```
+
+Darstellung des Netzwerks:
+
+```{r echo=FALSE}
+plot(
+  cc.network,
+  vertex.size     = degree(cc.network)/10 +1,
+  vertex.label    = NA,
+  edge.arrow.size = .25
+  )
+```
+
+## 5-Fragen-Beschreibung
+
+ähnlich zu 5-Punkt-Beschreibung, gut zur allg. Beschreibung eines Netzwerks
+
+### Size: Wie groß ist das Netzwerk?
+
+Wie viele Knoten / Verbindungen **(engl: Vertices / Edges)** hat das Netzwerk
+
+```{r}
+length(V(cc.network)) 
+# 114 Knoten
+length(E(cc.network)) 
+# 634 Verbindungen
+```
+
+### Density: wie dicht ist das Netzwerks?
+
+wie nah sind die Knoten beieinander
+
+```{r}
+edge_density(cc.network)
+```
+
+### Components: wie viele Komponenten (Gesamtnetzwerke) hat das Netzwerk?
+
+gibt es unternetzwerke, die keine Verbindung haben zu anderem?
+
+```{r}
+count_components(cc.network)
+```
+
+### Compactness: wie kompakt ist das Netzwerk?
+
+wie viele Schritte braucht es maximal, Information im Netzwerk zu senden?
+
+```{r}
+diameter(cc.network)
+```
+
+### Transitivität: wie stark tendiert das Netzwerk dazu Cluster zu bilden?
+
+```{r}
+transitivity(cc.network)
+```
+
+Wert zwischen 0 \> T \> 1, wir sind gut in der Mitte, gibt aber Tendenzen

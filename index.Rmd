@@ -1,0 +1,18 @@
+---
+title: "R-Tutorium"
+author: "Marten Walk"
+date: "2022-02-01"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+---
+# Startseite
+
+Wilkommen auf dieser Website über das R-Tutorium im WS2021/22. Diese Seite basiert 
+auf *RMarkdown* Dokumenten und wird mithilfe von `bookdown` gerendert. 
+
+## Allgemein
+
+- Modul: R-Tutorium 2021/22 
+- Uni: Martin-Luther-Universität Halle
+- Dozent: Christoph Herrmann
+- Autor: Marten Walk

@@ -1,0 +1,231 @@
+# 18.01.22 Maschinelles Lernen / Data Mining
+
+=> Lösen von Klassifikationsproblemen
+
+
+## Import all packages
+
+```{r include=FALSE}
+library(tensorflow)
+library(keras)
+library(tidyverse)
+library(MASS)
+library(GGally)
+library(randomForest)
+```
+
+## Datensatz einlesen
+
+```{r}
+head(iris)
+st_iris <- as.data.frame(scale(iris[,-5]))
+st_iris <- tibble(st_iris) %>% 
+  add_column(Species = iris$Species)
+```
+
+### Beschreibung
+```{r echo=FALSE}
+library(pastecs)
+iris %>% 
+  stat.desc(basic=F, norm=F) 
+```
+
+### Visualisieren
+```{r echo=FALSE}
+iris[,-5] %>% 
+  ggpairs( aes(color = iris$Species))
+```
+
+## Lineare Diskriminanzanalyse
+
+### Test / Train
+
+```{r}
+train <- sample(1:nrow(st_iris), 0.75*nrow(st_iris)) # 75 % fürs testen
+train_set <- st_iris[train,]
+test_set <- st_iris[-train,]
+```
+
+### Modelltrainierung
+
+```{r}
+lda_train  <- lda(Species ~. , data = train_set)
+train_pred <- predict(lda_train, train_set)$class
+
+table(train_pred, train_set$Species)
+```
+
+### Bewertung anhand der Testdaten
+
+```{r}
+test_pred <- predict(lda_train, test_set)$class
+table(test_pred, test_set$Species)
+```
+
+## Random Forest Methode
+
+### Bildung mehrerer Entscheidungsbäume
+
+```{r}
+#wiederholung der Train-Test-Sets
+train <- sample(1:nrow(st_iris), 0.75*nrow(st_iris)) # 75 % fürs testen
+train_set <- st_iris[train,]
+test_set <- st_iris[-train,]
+
+
+rf1 <- randomForest(
+  Species ~ ., 
+  data = train_set,  
+  ntree = 100,
+  mtry = 2,
+  importance = T,
+  proximity = T
+)
+
+rf1
+
+train_predict <- predict(rf1, train_set[,-5], type = "response")
+table(train_predict, train_set$Species)
+
+test_predict <- predict(rf1, test_set[,-5], type = "response")
+table(test_predict, test_set$Species)
+```
+
+## Neuronales Netzwerk
+
+### Standardisierung und Aufteilung der Daten
+
+```{r}
+st_iris[,5] <- as.numeric(iris$Species) -1
+st_iris <- as.matrix(st_iris)
+
+train_set <- st_iris[train,-5]
+test_set <- st_iris[-train,-5]
+```
+
+### Trainieren des Neuronalen Netzwerks
+
+```{r include=FALSE}
+# definition der benötigten Endkategorien = Input Layer
+train_settarget <- to_categorical(st_iris[train,5]) 
+test_settarget <- to_categorical(st_iris[-train,5]) 
+
+dl <- keras_model_sequential()
+dl %>% 
+  # first define the hidden layer
+  layer_dense(units = 28, activation = "relu", input_shape = c(4)) %>% 
+  # jetz der output layer
+  layer_dense(units = 3, activation = "softmax")
+
+# loss function setzen
+dl %>% 
+  compile(
+    loss = "categorical_crossentropy",
+    optimizer = "adam",
+    metrics = "accuracy")
+
+dl %>% 
+  fit(train_set, train_settarget, 
+      epochs = 100,
+      batch_size = 5,
+      validation_split = 0.2
+  )
+```
+
+### Evaluation
+
+```{r}
+score <- dl %>% 
+  evaluate(test_set, test_settarget, batch_size = 128)
+print(score)
+
+# class <- predict_classes(dl, test_set) #decepretated
+class <- dl %>% predict(test_set) %>% k_argmax()
+class_numeric <- as.numeric(class)
+
+table(as.numeric(class), st_iris[-train,5])
+```
+
+## H20
+
+Internetverbundenes Packet, basierend auf **JAVA!!**
+
+ich werde es nicht herunterladen, deswegen nur den ersten Block mitgeschrieben
+
+```{r eval=FALSE}
+localH20 = h2o.init(
+  ip = "localhost",
+  port = 54321,
+  startH2O = T,
+  nthreads = -1,
+  max_mem_size = "2G"
+  )
+```
+
+## Aufgabenblatt
+
+```{r, results=FALSE}
+library(tidyverse)
+library(GGally)
+library(pastecs)
+```
+
+```{r}
+load("data/biathlon4.RData")
+load("data/biathlon3.RData")
+```
+
+a\) Betrachten Sie zunächst alle Variablen im Datensatz und analysieren Sie diese hinsichtlich Ihrer Lage und Streuung. Lassen sich irgendwelche Auffälligkeiten feststellen? Wenn ja sollten Sie überlegen, wie Sie diese bereinigen bzw. beseitigen könnten.
+
+```{r}
+test %>% 
+  dplyr::select(c(total.time, shoot.times.total, fails.total, type)) %>% 
+  stat.desc(basic = F) 
+```
+
+```{r}
+test %>% 
+  dplyr::select(c(total.time, shoot.times.total, tot.climb)) %>% 
+  ggpairs()
+```
+
+```{r}
+test %>% 
+  ggplot(aes(x = total.time, y = shoot.times.total, color = type)) +
+    geom_point() +
+    facet_wrap(~gender)
+```
+
+Komisch: bei letzem Graphen erkennbar eine kleine Gruppe mit niedrigen Zeiten, unabhängig vom Rest des Feldes
+
+vielleicht abhängig von Teamsachen
+
+```{r}
+test$is_team <- grepl("[0-9]", test$nation) #checks if there are any numbers in nation name, a sign for a team base
+test %>% 
+  ggplot(aes(x = total.time, y = shoot.times.total, color = is_team)) +
+    geom_point() +
+    facet_grid(~gender)
+```
+
+funktioniert so ein bisschen, nicht komplett, aber egal.
+
+### Filtern + Standardisieren des Datensatzes
+
+welche Variable wollen wir erkennen lassen ?
+
+```{r}
+colnames(test)
+```
+
+Datensatz extrahierung
+
+```{r}
+st_test <- test %>% 
+  dplyr::select(total.time, course.total, shoot.times.total, height.diff) %>% 
+  scale()
+
+st_train <- train %>% 
+  dplyr::select(total.time, course.total, shoot.times.total, height.diff) %>% 
+  scale()
+```

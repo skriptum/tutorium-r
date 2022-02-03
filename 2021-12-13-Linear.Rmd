@@ -1,0 +1,193 @@
+# 13.12.21 Lineare Regression
+
+## Packages
+```{r}
+library(tidyverse)
+```
+
+## Datensatz Deskription
+```{r}
+starwars <- starwars
+```
+
+### Beschreibung
+```{r}
+# Augenfarbe ~ Masse
+starwars %>% 
+  group_by(eye_color) %>% 
+  summarize(
+    avg_mass = mean(mass, na.rm = T)
+  )
+
+# 5-Punkte (nach Gewicht)
+starwars %>% 
+  group_by(gender) %>% 
+  filter(!is.na(height)) %>% 
+  summarize(
+    min_height = min(height),
+    q1_height = quantile(height,0.25),
+    med_height = quantile(height,0.5),
+    q3_height = quantile(height, 0.75),
+    max_height = max(height)
+  )
+
+```
+
+### Visualisieren
+```{r}
+#erstmal eindeutschen
+starwars %>% 
+  mutate(gender = fct_recode(gender,
+    "Männlich" = "masculine",
+    "Weiblich" = "feminine",
+    "nichts" = "NA"
+  )) %>% 
+  ggplot(aes(height, gender)) +
+    geom_boxplot(na.rm = T) +
+    geom_point(stat= "summary", fun = "mean", color = "red") +
+    xlab("Größe in cm")+
+    ylab("Geschlecht") +
+    ggtitle("Boxplot der Größenverteilung nach Geschlecht")
+```
+
+## Regressionsanalyse (explorativ)
+
+```{r}
+diamonds <- diamonds
+
+summary(diamonds)
+
+diamonds %>% 
+  ggplot(aes(carat,price)) +
+  geom_point()
+
+diamonds %>% 
+  filter(!is.na(price)) %>% 
+  ggplot(aes(color, price)) +
+  geom_boxplot() +
+  geom_point(stat="summary", fun=mean, color="red")
+``` 
+
+### die Regression! 
+```{r}
+# Zusammenhang Preis Carat
+
+m0 <- lm(price ~ carat, data = diamonds)
+summary(m0)
+plot(m0)
+
+m1 <- lm(log(price) ~carat, data = diamonds)
+summary(m1)
+```
+
+
+```{r}
+#lineares modell mit polynomen
+m2 <- lm(log(price) ~ I(poly(carat, degree = 3)), data = diamonds)
+summary(m2)
+plot(m2)
+```
+
+
+## Aufgabenblatt
+
+a)
+```{r}
+library(tidyverse)
+swiss <- swiss
+
+# a)
+summary(swiss)
+
+```
+
+b)
+```{r}
+# b)
+# Streuung
+ggplot(stack(swiss), aes(ind, values)) +
+  geom_boxplot() +
+  geom_point(stat="summary", fun="mean", color= "red")
+
+```
+
+
+c)
+```{r}
+library(GGally)
+
+ggpairs(swiss)
+```
+
+## Lineares Modell
+
+benötigt: passende Variablen 
+Methodne zur Variablenselektion [hier](https://www.ruhr-uni-bochum.de/imperia/md/content/mathematik3/lehre/ss10/methodenlehre2/teil219062010.pdf) S. 96
+
+Vorwärtsverfahren: 
+- Variable mit höchster Korrelation auswählen und R^2 testen
+- immer weiter Variablen hinzufügen und R^2 testen
+- solange R^2 Veränderung signifikant ist : weitermachen
+
+```{r}
+# education
+model <- lm(Fertility ~ Education, data= swiss)
+summary(model)$r.squared
+# R^2 = 0.44
+```
+
+R^2 hier nur 44% (44% der Variation kann dadurch erklärt werden)
+
+-> multi lineares Modell testen mit weiteren Variabln
+```{r}
+# weitere Variable Catholic
+model2 <- lm(Fertility ~ Education+Catholic, data= swiss)
+summary(model2)$r.squared
+# R^2 => 0.57
+# delta R^2 = 0.11 (gut!)
+
+# Agriculture
+model3 <- lm(Fertility ~ Education+Catholic+Agriculture, data= swiss)
+summary(model3)$r.squared
+# R^2 = 0.64
+# delta R^2 = 0,07 (auch gut!)
+
+model4 <- lm(Fertility ~ Education+Catholic+Agriculture+Examination, data= swiss)
+summary(model4)$r.squared
+# r^2 ändert sich fast nicht
+```
+also Model3 oder model2
+
+```{r}
+plot(model2) #besser bei panel 2+4
+plot(model3)
+```
+
+
+d)
+```{r}
+m1 <- lm(log(Fertility) ~ Education, data= swiss)
+summary(m1)
+# r^2 0.57 > 0.44 
+plot(m1)
+
+m2 <- lm(log(Fertility) ~ Education+Catholic, data= swiss)
+summary(m2)$r.squared #r^2 = 0.61 > 0.57
+plot(m2)
+
+m3 <- lm(Fertility ~ Education+Catholic+Agriculture, data= swiss)
+summary(m3)$r.squared
+```
+
+
+e)
+```{r}
+library(robustbase)
+?lmrob
+model_robust <- lmrob(log(Fertility) ~ Education, data= swiss)
+summary(model_robust)
+#R^2 = 0.51 > 0.57 von davor
+```
+
+Berechnung (aus `lmrob`) : MM-type Methode im Gegensatz zur least-squares Methode
+verbessert R^2 Ergebnis aber nicht, und Rest kann ich nicht bewerten

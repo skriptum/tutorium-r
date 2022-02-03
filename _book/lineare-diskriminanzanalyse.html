@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>11 Lineare Diskriminanzanalyse | R-Tutorium</title>
+  <meta name="description" content="11 Lineare Diskriminanzanalyse | R-Tutorium" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="11 Lineare Diskriminanzanalyse | R-Tutorium" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="11 Lineare Diskriminanzanalyse | R-Tutorium" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="maschinelles-lernen-data-mining.html"/>
+<link rel="next" href="random-forest-methode.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/str_view-0.1.0/str_view.css" rel="stylesheet" />
+<script src="libs/str_view-binding-1.4.0/str_view.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Index File</a></li>
+<li class="chapter" data-level="2" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html"><i class="fa fa-check"></i><b>2</b> 27.10.21 Pakete und Datentypen</a>
+<ul>
+<li class="chapter" data-level="2.0.1" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#packages"><i class="fa fa-check"></i><b>2.0.1</b> Packages</a></li>
+<li class="chapter" data-level="2.0.2" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#r-markdown"><i class="fa fa-check"></i><b>2.0.2</b> R-Markdown</a></li>
+<li class="chapter" data-level="2.0.3" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#installation-von-wichtigen-paketen-für-diese-woche"><i class="fa fa-check"></i><b>2.0.3</b> Installation von wichtigen Paketen für diese Woche</a></li>
+<li class="chapter" data-level="2.1" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#datentypen"><i class="fa fa-check"></i><b>2.1</b> Datentypen</a></li>
+<li class="chapter" data-level="2.2" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#operatoren"><i class="fa fa-check"></i><b>2.2</b> Operatoren</a></li>
+<li class="chapter" data-level="2.3" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#datenarbeit"><i class="fa fa-check"></i><b>2.3</b> Datenarbeit</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html"><i class="fa fa-check"></i><b>3</b> 02.11.02 Der Tidyverse Approach</a>
+<ul>
+<li class="chapter" data-level="3.0.1" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html#readr-for-import"><i class="fa fa-check"></i><b>3.0.1</b> readr for import</a></li>
+<li class="chapter" data-level="3.0.2" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html#working-with-tidyr"><i class="fa fa-check"></i><b>3.0.2</b> working with tidyr</a></li>
+<li class="chapter" data-level="3.0.3" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html#dplyr"><i class="fa fa-check"></i><b>3.0.3</b> dplyr</a></li>
+<li class="chapter" data-level="3.0.4" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html#aufgabenblatt"><i class="fa fa-check"></i><b>3.0.4</b> Aufgabenblatt</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html"><i class="fa fa-check"></i><b>4</b> 08.11.21 tidyverse mit stringr, forcats, lubridate</a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#stringr-paket"><i class="fa fa-check"></i><b>4.0.1</b> stringr-Paket</a></li>
+<li class="chapter" data-level="4.0.2" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#forcats"><i class="fa fa-check"></i><b>4.0.2</b> forcats</a></li>
+<li class="chapter" data-level="4.0.3" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#lubridate"><i class="fa fa-check"></i><b>4.0.3</b> lubridate</a></li>
+<li class="chapter" data-level="4.0.4" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#aufgabenblatt-3"><i class="fa fa-check"></i><b>4.0.4</b> Aufgabenblatt 3</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ggplot.html"><a href="ggplot.html"><i class="fa fa-check"></i><b>5</b> 19.11.2021 ggplot</a></li>
+<li class="chapter" data-level="6" data-path="schleifen.html"><a href="schleifen.html"><i class="fa fa-check"></i><b>6</b> 26.11.21 Schleifen</a>
+<ul>
+<li class="chapter" data-level="6.0.1" data-path="schleifen.html"><a href="schleifen.html#if-else"><i class="fa fa-check"></i><b>6.0.1</b> if else</a></li>
+<li class="chapter" data-level="6.0.2" data-path="schleifen.html"><a href="schleifen.html#repeat"><i class="fa fa-check"></i><b>6.0.2</b> repeat</a></li>
+<li class="chapter" data-level="6.0.3" data-path="schleifen.html"><a href="schleifen.html#while"><i class="fa fa-check"></i><b>6.0.3</b> while</a></li>
+<li class="chapter" data-level="6.0.4" data-path="schleifen.html"><a href="schleifen.html#for"><i class="fa fa-check"></i><b>6.0.4</b> for</a></li>
+<li class="chapter" data-level="6.0.5" data-path="schleifen.html"><a href="schleifen.html#praktische-anwendung-validierung"><i class="fa fa-check"></i><b>6.0.5</b> praktische Anwendung: Validierung</a></li>
+<li class="chapter" data-level="6.0.6" data-path="schleifen.html"><a href="schleifen.html#apply"><i class="fa fa-check"></i><b>6.0.6</b> apply</a></li>
+<li class="chapter" data-level="6.0.7" data-path="schleifen.html"><a href="schleifen.html#funktionen"><i class="fa fa-check"></i><b>6.0.7</b> funktionen</a></li>
+<li class="chapter" data-level="6.0.8" data-path="schleifen.html"><a href="schleifen.html#aufgabenblatt-1"><i class="fa fa-check"></i><b>6.0.8</b> Aufgabenblatt</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="clusteranalyse.html"><a href="clusteranalyse.html"><i class="fa fa-check"></i><b>7</b> 06.12.21 Clusteranalyse</a>
+<ul>
+<li class="chapter" data-level="7.0.1" data-path="clusteranalyse.html"><a href="clusteranalyse.html#datensatz-analyse"><i class="fa fa-check"></i><b>7.0.1</b> Datensatz Analyse</a></li>
+<li class="chapter" data-level="7.0.2" data-path="clusteranalyse.html"><a href="clusteranalyse.html#partitionierende-clusteranalyse"><i class="fa fa-check"></i><b>7.0.2</b> partitionierende Clusteranalyse</a></li>
+<li class="chapter" data-level="7.1" data-path="clusteranalyse.html"><a href="clusteranalyse.html#aufgabenblatt-2"><i class="fa fa-check"></i><b>7.1</b> Aufgabenblatt</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="lineare-regression.html"><a href="lineare-regression.html"><i class="fa fa-check"></i><b>8</b> 13.12.21 Lineare Regression</a>
+<ul>
+<li class="chapter" data-level="8.0.1" data-path="lineare-regression.html"><a href="lineare-regression.html#packages-1"><i class="fa fa-check"></i><b>8.0.1</b> Packages</a></li>
+<li class="chapter" data-level="8.0.2" data-path="lineare-regression.html"><a href="lineare-regression.html#datensatz"><i class="fa fa-check"></i><b>8.0.2</b> Datensatz</a></li>
+<li class="chapter" data-level="8.0.3" data-path="lineare-regression.html"><a href="lineare-regression.html#auswertung"><i class="fa fa-check"></i><b>8.0.3</b> Auswertung</a></li>
+<li class="chapter" data-level="8.0.4" data-path="lineare-regression.html"><a href="lineare-regression.html#visualisieren-deskriptiv"><i class="fa fa-check"></i><b>8.0.4</b> Visualisieren (deskriptiv)</a></li>
+<li class="chapter" data-level="8.0.5" data-path="lineare-regression.html"><a href="lineare-regression.html#regressionsanalyse-explorativ"><i class="fa fa-check"></i><b>8.0.5</b> Regressionsanalyse (explorativ)</a></li>
+<li class="chapter" data-level="8.1" data-path="lineare-regression.html"><a href="lineare-regression.html#aufgabenblatt-4"><i class="fa fa-check"></i><b>8.1</b> Aufgabenblatt</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="lineares-modell.html"><a href="lineares-modell.html"><i class="fa fa-check"></i><b>9</b> Lineares Modell</a></li>
+<li class="chapter" data-level="10" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html"><i class="fa fa-check"></i><b>10</b> 18.01.22 Maschinelles Lernen / Data Mining</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#import-all-packages"><i class="fa fa-check"></i><b>10.1</b> Import all packages</a></li>
+<li class="chapter" data-level="10.2" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#datensatz-einlesen"><i class="fa fa-check"></i><b>10.2</b> Datensatz einlesen</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="lineare-diskriminanzanalyse.html"><a href="lineare-diskriminanzanalyse.html"><i class="fa fa-check"></i><b>11</b> Lineare Diskriminanzanalyse</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="lineare-diskriminanzanalyse.html"><a href="lineare-diskriminanzanalyse.html#test-train"><i class="fa fa-check"></i><b>11.1</b> Test / Train</a></li>
+<li class="chapter" data-level="11.2" data-path="lineare-diskriminanzanalyse.html"><a href="lineare-diskriminanzanalyse.html#modelltrainierung"><i class="fa fa-check"></i><b>11.2</b> Modelltrainierung</a></li>
+<li class="chapter" data-level="11.3" data-path="lineare-diskriminanzanalyse.html"><a href="lineare-diskriminanzanalyse.html#bewertung-anhand-der-testdaten"><i class="fa fa-check"></i><b>11.3</b> Bewertung anhand der Testdaten</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="random-forest-methode.html"><a href="random-forest-methode.html"><i class="fa fa-check"></i><b>12</b> Random Forest Methode</a></li>
+<li class="chapter" data-level="13" data-path="neuronales-netzwerk.html"><a href="neuronales-netzwerk.html"><i class="fa fa-check"></i><b>13</b> Neuronales Netzwerk</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="neuronales-netzwerk.html"><a href="neuronales-netzwerk.html#standardisierung-und-aufteilung-der-daten"><i class="fa fa-check"></i><b>13.1</b> Standardisierung und Aufteilung der Daten</a></li>
+<li class="chapter" data-level="13.2" data-path="neuronales-netzwerk.html"><a href="neuronales-netzwerk.html#trainieren-des-neuronalen-netzwerks"><i class="fa fa-check"></i><b>13.2</b> Trainieren des Neuronalen Netzwerks</a></li>
+<li class="chapter" data-level="13.3" data-path="neuronales-netzwerk.html"><a href="neuronales-netzwerk.html#evaluation"><i class="fa fa-check"></i><b>13.3</b> Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="h20.html"><a href="h20.html"><i class="fa fa-check"></i><b>14</b> H20</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="h20.html"><a href="h20.html#aufgabenblatt-5"><i class="fa fa-check"></i><b>14.1</b> Aufgabenblatt</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="h20.html"><a href="h20.html#filtern-standardisieren-des-datensatzes"><i class="fa fa-check"></i><b>14.1.1</b> Filtern + Standardisieren des Datensatzes</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html"><i class="fa fa-check"></i><b>15</b> 26.01.22 Soziale Netzwerkanalyse</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#imports"><i class="fa fa-check"></i><b>15.1</b> Imports</a></li>
+<li class="chapter" data-level="15.2" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#read-in-the-data-from-online-resource"><i class="fa fa-check"></i><b>15.2</b> Read in the Data from online Resource</a></li>
+<li class="chapter" data-level="15.3" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#tidying-desc"><i class="fa fa-check"></i><b>15.3</b> Tidying + Desc</a></li>
+<li class="chapter" data-level="15.4" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#network-creation"><i class="fa fa-check"></i><b>15.4</b> Network Creation</a>
+<ul>
+<li class="chapter" data-level="15.4.1" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#size-wie-groß-ist-das-netzwerk"><i class="fa fa-check"></i><b>15.4.1</b> Size: Wie groß ist das Netzwerk?</a></li>
+<li class="chapter" data-level="15.4.2" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#density-wie-dicht-ist-das-netzwerks"><i class="fa fa-check"></i><b>15.4.2</b> Density: wie dicht ist das Netzwerks?</a></li>
+<li class="chapter" data-level="15.4.3" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#components-wie-viele-komponenten-gesamtnetzwerke-hat-das-netzwerk"><i class="fa fa-check"></i><b>15.4.3</b> Components: wie viele Komponenten (Gesamtnetzwerke) hat das Netzwerk?</a></li>
+<li class="chapter" data-level="15.4.4" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#compactness-wie-kompakt-ist-das-netzwerk"><i class="fa fa-check"></i><b>15.4.4</b> Compactness: wie kompakt ist das Netzwerk?</a></li>
+<li class="chapter" data-level="15.4.5" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#transitivität-wie-stark-tendiert-das-netzwerk-dazu-cluster-zu-bilden"><i class="fa fa-check"></i><b>15.4.5</b> Transitivität: wie stark tendiert das Netzwerk dazu Cluster zu bilden?</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R-Tutorium</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="lineare-diskriminanzanalyse" class="section level1" number="11">
+<h1><span class="header-section-number">11</span> Lineare Diskriminanzanalyse</h1>
+<div id="test-train" class="section level2" number="11.1">
+<h2><span class="header-section-number">11.1</span> Test / Train</h2>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="lineare-diskriminanzanalyse.html#cb391-1" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(st_iris), <span class="fl">0.75</span><span class="sc">*</span><span class="fu">nrow</span>(st_iris)) <span class="co"># 75 % fürs testen</span></span>
+<span id="cb391-2"><a href="lineare-diskriminanzanalyse.html#cb391-2" aria-hidden="true" tabindex="-1"></a>train_set <span class="ot">&lt;-</span> st_iris[train,]</span>
+<span id="cb391-3"><a href="lineare-diskriminanzanalyse.html#cb391-3" aria-hidden="true" tabindex="-1"></a>test_set <span class="ot">&lt;-</span> st_iris[<span class="sc">-</span>train,]</span></code></pre></div>
+</div>
+<div id="modelltrainierung" class="section level2" number="11.2">
+<h2><span class="header-section-number">11.2</span> Modelltrainierung</h2>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="lineare-diskriminanzanalyse.html#cb392-1" aria-hidden="true" tabindex="-1"></a>lda_train  <span class="ot">&lt;-</span> <span class="fu">lda</span>(Species <span class="sc">~</span>. , <span class="at">data =</span> train_set)</span>
+<span id="cb392-2"><a href="lineare-diskriminanzanalyse.html#cb392-2" aria-hidden="true" tabindex="-1"></a>train_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_train, train_set)<span class="sc">$</span>class</span>
+<span id="cb392-3"><a href="lineare-diskriminanzanalyse.html#cb392-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb392-4"><a href="lineare-diskriminanzanalyse.html#cb392-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(train_pred, train_set<span class="sc">$</span>Species)</span></code></pre></div>
+<pre><code>##             
+## train_pred   setosa versicolor virginica
+##   setosa         36          0         0
+##   versicolor      0         36         1
+##   virginica       0          2        37</code></pre>
+</div>
+<div id="bewertung-anhand-der-testdaten" class="section level2" number="11.3">
+<h2><span class="header-section-number">11.3</span> Bewertung anhand der Testdaten</h2>
+<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="lineare-diskriminanzanalyse.html#cb394-1" aria-hidden="true" tabindex="-1"></a>test_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_train, test_set)<span class="sc">$</span>class</span>
+<span id="cb394-2"><a href="lineare-diskriminanzanalyse.html#cb394-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(test_pred, test_set<span class="sc">$</span>Species)</span></code></pre></div>
+<pre><code>##             
+## test_pred    setosa versicolor virginica
+##   setosa         14          0         0
+##   versicolor      0         12         0
+##   virginica       0          0        12</code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="maschinelles-lernen-data-mining.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="random-forest-methode.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

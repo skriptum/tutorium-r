@@ -1,0 +1,178 @@
+# 06.12.21 Clusteranalyse
+
+```{r}
+library(tidyverse)
+library(GGally)
+library(ggpubr)
+```
+
+## Datensatz Tidyr
+
+```{r}
+arrests <- tibble(USArrests)
+```
+
+### Umformung
+
+```{r}
+arrests <- arrests %>% 
+  mutate(state = rownames(USArrests))
+```
+
+## Deskription 
+
+### kurze Analyse
+
+```{r}
+arrests %>% 
+  summarise(
+    avg_murder = mean(Murder),
+    sd_murder = sd(Murder),
+    avg_assault = mean(Assault),
+    sd_assault = sd(Assault),
+    avg_pop = mean(UrbanPop),
+    sd_pop = sd(UrbanPop),
+    avg_rape = mean(Rape),
+    sd_rape = sd(Rape)
+  )
+```
+
+### Zusammenhänge
+
+```{r}
+arrests %>% 
+  ggpairs(columns = c("Murder", "Assault", "UrbanPop", "Rape"))
+```
+
+## hierarchsiche Clusteranalyse
+
+wichtig: - Standardisierung der Variablen - nur für metrisch skalierte Variablen
+
+Vorbereitung
+
+```{r}
+# Standardisierung
+st_arrest <- scale(arrests[,-5]) #alle außer die states
+
+# Distanzmatrix (euklidisches Maß)
+eu_dist <- dist(st_arrest)
+```
+
+Clusterisierung
+
+```{r}
+h_eu_compl <- hclust(eu_dist)
+h_eu_compl$labels <- arrests$state 
+```
+
+Darstellung mit Dendrogrammen
+
+```{r}
+plot(h_eu_compl, hang = -1)
+```
+
+=> vermutlich beste Clusteranzahl = 4
+
+## partitionierende Clusteranalyse
+
+```{r}
+k2 <- kmeans(st_arrest[,1:2], centers = 4, nstart = 50)
+
+arrests %>% 
+  mutate(cluster = k2$cluster) %>% 
+  ggplot(aes(Assault, Murder, color = factor(cluster))) +
+    geom_point() +
+    geom_text(aes(label = state), hjust = -0.1)
+```
+
+## Aufgabenblatt
+
+Biathlon Datensatz
+
+importe:
+
+```{r}
+library(tidyverse)
+library(GGally)
+library(ggpubr)
+```
+
+Datensatz einlesen
+
+```{r}
+load("data/biathlon3.RData")
+head(df.biathlon3,1) %>% t()
+```
+
+a\) Betrachtung des Datensatzes
+
+```{r}
+library(pastecs)
+
+df.biathlon3 %>% 
+  dplyr::select(course.lap.1:shoot.times.total) %>% 
+  stat.desc(basic=F) %>% 
+  t() %>% 
+  as.data.frame()
+
+```
+
+```{r}
+df.biathlon3$type <- factor(df.biathlon3$type)
+df.biathlon3$competition <- factor(df.biathlon3$competition)
+summary(df.biathlon3$competition)
+summary(df.biathlon3$type)
+
+df.biathlon3 %>% 
+  ggplot(aes(x=  course.total, y= shoot.times.total,color=competition)) +
+    geom_point() 
+    # facet_wrap(~gender)
+```
+
+b\)
+
+```{r}
+library(patchwork)
+df_laps <- df.biathlon3 %>% dplyr::select(course.lap.1:course.lap.5)
+df_shoots <- df.biathlon3 %>% dplyr::select(shoot.times.1:shoot.times.4)
+df_fails <- dplyr::select(df.biathlon3, fails.1:fails.4)
+
+p1 <- ggplot(stack(df_laps), aes(x = ind, y = values)) +
+  geom_boxplot()
+p2 <- ggplot(stack(df_shoots), aes(x = ind, y = values)) +
+  geom_boxplot()
+
+p1 / p2 
+```
+
+```{r}
+ggplot(df.biathlon3, aes(x=fails.total)) +
+  geom_histogram()
+```
+
+c\) auwahl, standardisierung
+
+```{r}
+st_df <- df.biathlon3 %>% 
+  dplyr::select(course.total, shoot.times.total, fails.total) %>%
+  scale()
+  # mutate(comp = competition)
+
+plot(hclust(dist(st_df)))
+```
+
+```{r}
+k <- kmeans(st_df[,1:2], centers = 4, nstart = 50)
+
+p1 <- ggplot(df.biathlon3, aes(course.total, shoot.times.total)) +
+  geom_point(aes(color=factor(k$cluster))) + 
+  theme(legend.position = "none") +
+  labs(title = "Cluster")
+  
+p2 <- ggplot(df.biathlon3, aes(course.total, shoot.times.total)) +
+  geom_point(aes(color=competition)) + 
+  theme(legend.position = "none") + 
+  labs(title = "Comp")
+
+p1 + p2 
+```

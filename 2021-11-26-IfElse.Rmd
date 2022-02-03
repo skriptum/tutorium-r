@@ -1,0 +1,260 @@
+# 26.11.21 Schleifen
+
+```{r}
+library("tidyverse")
+library(reticulate)
+use_python("/usr/local/bin/python3")
+```
+
+
+## if else
+
+```{r}
+x <- 5
+
+if(x==5) "Hallo" else "Ciao"
+
+if (x == 3) {
+  print("lol")
+} else {
+  print("not lol")
+}
+```
+
+## repeat
+
+```{r}
+i <- 1
+repeat {
+  print(i)
+  i <- i+1
+  if (i==14) break
+}
+```
+
+## while
+
+```{r}
+i <- 1
+while (i < 3) {
+  i <- i+1 
+  print(mean(sample(0:50,10)))
+}
+```
+
+## for
+
+```{r}
+i <- 1
+for (i in 1:5) {
+  print(i)
+}
+
+for (i in 4:9) print(i)
+```
+
+### i in m: m kann beliebig sein
+
+```{r}
+m <- c(1:7, 640:643)
+for (i in m) {
+  print(i)
+}
+```
+
+
+### praktische Anwendung: Validierung
+
+```{r echo=F}
+res_train <- c()
+res_valid <- c()
+
+# for (i in 0:10) {
+#   stichprobe <- sample(nrow(starwars), 0.75*nrow(starwars))
+#   train <- starwars[stichprobe, ]
+#   valid <- starwars[-stichprobe, ]
+#   ml <- lm(mass ~ height, data = train)
+#   pred_train <- predict(ml, train)
+#   pred_valid <- predict(ml, valid)
+#   res_train[i] <- residuals(ml)
+#   res_valid[i] <- valid$mass - pred_valid
+# }
+
+mean(res_train) 
+mean(res_valid, na.rm = T)
+```
+
+## apply
+
+```{r}
+x <- matrix(1:10, ncol = 2)
+apply(x, 1, max) # maximum jeder Zeile (margin = dimension)
+```
+
+## funktionen
+definition einer Funktion, die uns Mittelwert+ SD ausgibt
+```{r}
+mittel_sd <- function(x) {
+  if (is.na(mean(x))) {
+    mittel_sd <- "Überprüfen sie den Vektor!"
+  } else {
+    mittel_sd <- c(Mittelwert = mean(x), Standardabweichung = sd(x))
+  }
+  return(mittel_sd)
+}
+
+mittel_sd(starwars$height[!is.na(starwars$height)])
+```
+
+
+```{r}
+confidence_interval <- function(vector, interval, na_do = T) { #vorfestgelegter Wert für na_do
+  # 1. standardabweichung der stichprobe
+  vec_sd <- sd(vector, na.rm = na_do)
+  # 2. Stichprobenumfang
+  n <- length(vector)
+  # 3. Mittelwert
+  vec_mean <- mean(vector, na.rm = na_do)
+  # 4.Quantil der t-Verteilung
+  se <- qt((interval +1 )/2, df = (n-1)*vec_sd/sqrt(n))
+  # berechnung Konfidenz Intervall
+  result <- c("lower" = vec_mean -se, "upper" = vec_mean + se)
+  return(result)
+}
+
+confidence_interval(starwars$height, 0.95)
+```
+
+
+## Aufgabenblatt
+
+```{r}
+library(tidyverse)
+```
+
+### a)
+```{r}
+i <- 1
+repeat {
+  print(mean(sample(0:50,10)))
+  i <- i+1
+  if (i==10) break
+}
+```
+
+### b)
+```{r}
+i <- 0
+while (i <= 10) {
+  print(mean(sample(0:50,10)))
+  i <- i+1
+}
+```
+
+### c)
+```{r}
+for (i in 1:10) {
+  print(mean(sample(0:50,10)))
+}
+```
+
+### d)
+```{r}
+norm <- rnorm(1000, mean = 100, sd = 25)
+norm_matrix <- matrix(norm, ncol = 20)
+for (i in 20:22) {
+  for (j in 5:7) {
+    print(norm_matrix[i,j])
+  }
+  print("--")
+}
+```
+
+### e)
+```{r}
+norm_vector <- rnorm(1000,100,33)
+average <- vector()
+
+for (i in 1:length(norm_vector)) {
+  mean_vec <- mean(sample(norm_vector, 400))
+  average <- append(average,mean_vec)
+}
+mean(average)
+```
+
+### f)
+```{r}
+wurf <- function(x, M) {
+  avg_vector <- vector()
+  for (i in 1:M) {
+    samp <- sample(c("Kopf", "Zahl"), x, replace = T)
+    avg_vector <- append(avg_vector, sum(samp=="Kopf"))
+  }
+  return(mean(avg_vector))
+}
+wurf(100,10)
+```
+
+### g)
+```{r include=FALSE}
+library(tidyverse)
+for (i in 1:nrow(starwars)) {
+  mass <- starwars$mass[i]
+  if (is.na(mass)) {print("Fehlender Wert"); next}
+  if (mass <= 140) {
+    print("weniger als 140kg")
+  } else{
+    print("mehr als 140kg")
+  }
+}
+
+for (i in starwars$mass) {
+  if (is.na(i)) {print("Fehlender Wert"); next}
+  if (i <= 140) {
+    print("weniger als 140kg")
+  } else{
+    print("mehr als 140kg")
+  }
+}
+```
+
+
+### h)
+```{r}
+corr <- function(x,y){
+  #Test
+  if (!(is.numeric(x) | !is.numeric(y))) {
+    return("Ein Wert ist nicht numerisch")
+  }
+  corr <- cor.test(x,y, method= "pearson")
+  df <- data.frame(x,y)
+  lin <- lm(x~y,df)
+  return(list(corr$estimate,lin))
+}
+
+corr(1:10, 10:1)
+```
+
+
+### i)
+"Schreiben Sie eine Schleife, die zwei Würfel M-mal rollt und deren Summe berechnet. **Im Anschluss soll die erwartete Summe der beiden Würfel ausgegeben werden. Je größer M, desto mehr sollte sich die erwartete Augensumme der theoretischen, erwarteten Augensumme anpassen." (Was ist mit markiertem Teil gemeint?)**
+
+```{r}
+M <- 10
+for (i in 1:M) {
+  würfel1 <- sample(1:6,1)
+  würfel2 <- sample(1:6,1)
+  summe1 <- würfel1 + würfel2
+}
+```
+
+### j)
+```{r}
+library(MASS)
+apply(Animals,2, FUN=mean)
+```
+
+### k)
+```{r}
+apply(Animals[1],1, FUN=mean)
+```

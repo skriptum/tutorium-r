@@ -1,0 +1,205 @@
+# 19.11.21 ggplot
+
+**Vorteil ggplot:** nicht vordefinierte Grafiken, sondern Zusammensetzung vieler Layers
+
+## Arten von Plots
+
+```{r}
+library(tidyverse)
+starwars <- starwars
+head(starwars)
+```
+
+### Punktdiagramm
+```{r}
+ggplot(data =starwars, aes(x= height, y = mass, color = species)) + #aes = achsen / aestethics: welche achesn werden dargestellt
+  geom_point() + #art des graphs
+  facet_wrap(~gender) #facettierung = unterteilung des Plots
+```
+
+### Säulen: 
+
+```{r}
+starwars %>% 
+  ggplot( aes(x = hair_color, group = gender)) +  #normal einfach nur das x auswählen
+  geom_bar(aes(y = (..count../sum(..count..)))) + #hier special: die y-achse wir definiert als 
+  scale_y_continuous(labels = scales::percent) + #die y skala kriegt einen namen
+  facet_wrap(~gender) #und es wird nach verschiedenen gruppen aufgeteilt
+```
+
+### Histogramm
+
+```{r}
+#mit binwidth
+starwars %>% 
+  filter(!is.na(height)) %>% 
+  ggplot(aes(height)) +
+  geom_histogram(binwidth = 25)
+
+#relative verteilung 
+starwars %>% 
+  filter(!is.na(height)) %>% 
+  ggplot(aes(height)) +
+  geom_histogram(aes(y = ..density..)) + #mit relativer Dichte:
+  geom_density() + #verteilungslinie darüber
+  xlab("Größe in cm") #label für die x achse
+
+
+```
+
+### Boxplot
+
+```{r}
+starwars %>% 
+  filter (mass != max(mass, na.rm = T), !is.na(gender)) %>%  #größten Wert Jabba Hut rausfiltern 
+  ggplot( aes(y = mass, x = gender)) +
+  geom_boxplot()
+
+# mit arithm. Mittel als Punkt
+starwars %>% 
+  filter (mass != max(mass, na.rm = T), !is.na(gender)) %>%  #größten Wert Jabba Hut rausfiltern 
+  ggplot( aes(y = mass, x = gender)) +
+  geom_boxplot() + 
+  geom_point(stat = "summary", fun = "mean", colour = "blue", na.rm = T)
+```
+
+### Violin
+```{r echo=TRUE}
+starwars %>% 
+  filter (mass != max(mass, na.rm = T), !is.na(gender)) %>%  #größten Wert Jabba Hut rausfiltern 
+  ggplot(aes(y = mass, x = gender)) +
+  geom_violin()
+```
+## Aufgaben
+
+```{r}
+library(tidyverse) 
+library(MASS) 
+library(datasets) 
+library(timetk) 
+library(lubridate) 
+library(robustbase) 
+library(usmap) 
+library(GGally) 
+library(ggpubr) 
+library(directlabels) 
+library(nlme)
+```
+
+
+### 1a)
+
+```{r}
+deaths <- USAccDeaths
+deaths <- tk_tbl(deaths)
+ggplot(deaths, aes(index, value)) + 
+  geom_line() +
+  xlab("Time") + 
+  ylab("Accidental Deaths")
+```
+
+### 1b)
+
+```{r}
+Animals %>% 
+  ggplot(aes(body, brain, label = rownames(Animals))) +
+    geom_point() +
+    geom_text(hjust = "left", vjust = "bottom", nudge_x = 0.05) + #adjust text position
+    scale_y_log10() +
+    scale_x_log10() +
+    xlab("Logarithmiertes Körpergewicht") +
+    ylab("Logarithmiertes Gehirngewicht") 
+```
+
+### 1c)
+```{r}
+animals <- Animals
+animals$brain <- log(Animals$brain)
+animals$body <- log(Animals$body)
+
+
+animals %>% 
+  ggplot(aes(body,brain, label= rownames(Animals))) +
+  geom_point() +
+  geom_smooth(method = "lmrob", color = "red") +
+  geom_smooth(method = "lm") +
+  geom_text(hjust = "left", vjust = "bottom", nudge_x = 0.05) + #adjust text position
+  xlab("Logarithmiertes Körpergewicht") +
+  ylab("Logarithmiertes Gehirngewicht") 
+```
+
+### 1d)
+```{r}
+mpg %>% 
+  ggplot(aes(displ, hwy, color = class, label= class)) +
+  geom_point() +
+  geom_smooth(mapping = aes(displ, hwy), method = "lm", inherit.aes = F) +
+  geom_dl( method = "smart.grid") # positiionign smartly in middle of points with method smart.grid
+```
+
+### 1e)
+```{r}
+boys <- Oxboys
+boys %>% 
+  ggplot(aes( age,height, group = Subject)) +
+  geom_line() +
+  geom_smooth(method = "lm", se = F, mapping = aes(age,height), inherit.aes = F)
+# with custom mapping to take all 
+```
+
+### 1f)
+```{r}
+deaths <- USAccDeaths
+deaths <- tk_tbl(deaths)
+deaths$year <- factor(year(deaths$index))
+deaths$month <- factor(month(deaths$index))
+
+deaths$month <- fct_recode(deaths$month, 
+          "Jan" = "1", "Feb" = "2", "Mar" = "3", "Apr"= "4","Mai" = "5", "Jun"= "6",
+          "Jul"="7","Aug" = "8", "Sep"="9", "Oct"="10", "Nov"="11", "Dez"="12"
+                           )
+deaths %>% 
+  ggplot(aes(month, value, group = year, color = year)) +
+  geom_line()
+```
+
+
+### 1g)
+```{r}
+eco <- economics
+presidential <- subset(presidential, start > economics$date[1])
+eco %>% 
+  ggplot()+
+  #alle farbsachen der präsidenten
+  geom_rect(aes(xmin = start, xmax = end, fill = party), ymin = -Inf, ymax = Inf, alpha = 0.5, data = presidential) +
+  geom_vline(aes(xintercept = as.numeric(start)), data = presidential, colour = "grey50", alpha = 0.3) +
+  geom_text(aes(x = start, y = 2500, label = name), data = presidential, size = 3, vjust = 0, hjust = 0, nudge_x = 50)+
+  scale_fill_manual(values=c("blue", "red")) + #farbwechsel
+  geom_line(aes(date,unemploy)) + #die linie
+  xlab("Year") +
+  ylab("Number of unemployed in thousand")
+```
+
+## aufgabe 2
+
+### 2a)
+```{r}
+mtcars %>% 
+  ggplot(aes(cyl)) +
+  geom_histogram(aes(y=..density..),binwidth = 2,) +
+  facet_wrap(~am)
+
+```
+
+### 2f)
+```{r}
+usa <- tibble(USArrests) %>% 
+  mutate(state = rownames(USArrests))
+
+plot_usmap(data = usa, regions = "state", values = "Murder", color = "red") +
+  scale_fill_continuous(name = "Murder", )
+```
+
+
+
+

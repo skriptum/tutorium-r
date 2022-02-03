@@ -1,0 +1,5 @@
+book_filename: "tutorium"
+output_dir: docs
+delete_merged_file: true
+edit: https://github.com/skriptum/tutorium-r/edit/master/%s
+view: https://github.com/skriptum/tutorium-r/blob/master/%s

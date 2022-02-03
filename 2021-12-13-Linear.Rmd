@@ -1,4 +1,4 @@
-# 13.12.21 Lineare Regression
+# Lineare Regression
 
 ## Packages
 ```{r}
@@ -183,7 +183,6 @@ summary(m3)$r.squared
 e)
 ```{r}
 library(robustbase)
-?lmrob
 model_robust <- lmrob(log(Fertility) ~ Education, data= swiss)
 summary(model_robust)
 #R^2 = 0.51 > 0.57 von davor

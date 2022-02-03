@@ -1,4 +1,4 @@
-# 08.11.21 tidyverse mit stringr, forcats, lubridate
+# tidyverse mit stringr, forcats, lubridate
 
 ```{r}
 library("tidyverse")

@@ -1,4 +1,4 @@
-# 02.11.02 Der Tidyverse Approach
+# Der Tidyverse Approach
 
 Import -> Tidy -> Transform / Visualise / Model -> Communicate
 
@@ -22,6 +22,7 @@ flights_sav <- read_sav("data/flights.sav")
 ```{r}
 load("data/flights.RData")
 ```
+
 => verschiedene praktische Sachen, alles auch im cheatsheet
 
 ## working with tidyr
@@ -139,7 +140,8 @@ flights %>%
 
 Starwars - Datensatz einladen
 
-### tidyr-arbeit: 
+### tidyr-arbeit:
+
 ```{r}
 load("data/starwars.RData")
 
@@ -158,9 +160,10 @@ tidyr::separate(starwars4, mass_height, into=c("mass", "height"),convert = T)
 
 #5 
 tidyr::unite(starwars5, hair_color1, hair_color2, col = "haircolor", na.rm = T, sep="-")
-``` 
+```
 
 ### dplyr-arbeit:
+
 ```{r}
 #1 
 starwars %>%
@@ -249,4 +252,5 @@ count(starwars, gender)
 dplyr::left_join(starwars6,starwars7, on = "name")
 
 ```
+
 yeehaw, fertig

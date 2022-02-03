@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7 Lineare Regression | tutorium.knit</title>
+  <meta name="description" content="" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7 Lineare Regression | tutorium.knit" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7 Lineare Regression | tutorium.knit" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="clusteranalyse.html"/>
+<link rel="next" href="maschinelles-lernen-data-mining.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/str_view-0.1.0/str_view.css" rel="stylesheet" />
+<script src="libs/str_view-binding-1.4.0/str_view.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="toc-logo"><a href="./"><img src="logo.png" style="border-radius: 50%;" ></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tutorium R-Language</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#allgemein"><i class="fa fa-check"></i><b>0.1</b> Allgemein</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#erklärung"><i class="fa fa-check"></i><b>0.2</b> Erklärung</a></li>
+<li class="chapter" data-level="0.3" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i><b>0.3</b> References</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html"><i class="fa fa-check"></i><b>1</b> Pakete und Datentypen</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#allgemein-1"><i class="fa fa-check"></i><b>1.1</b> Allgemein</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#packages"><i class="fa fa-check"></i><b>1.1.1</b> Packages</a></li>
+<li class="chapter" data-level="1.1.2" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#r-markdown"><i class="fa fa-check"></i><b>1.1.2</b> R-Markdown</a></li>
+<li class="chapter" data-level="1.1.3" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#installation-von-wichtigen-paketen-für-diese-woche"><i class="fa fa-check"></i><b>1.1.3</b> Installation von wichtigen Paketen für diese Woche</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#datentypen"><i class="fa fa-check"></i><b>1.2</b> Datentypen</a></li>
+<li class="chapter" data-level="1.3" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#operatoren"><i class="fa fa-check"></i><b>1.3</b> Operatoren</a></li>
+<li class="chapter" data-level="1.4" data-path="pakete-und-datentypen.html"><a href="pakete-und-datentypen.html#datenarbeit"><i class="fa fa-check"></i><b>1.4</b> Datenarbeit</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html"><i class="fa fa-check"></i><b>2</b> Der Tidyverse Approach</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html#readr-for-import"><i class="fa fa-check"></i><b>2.1</b> readr for import</a></li>
+<li class="chapter" data-level="2.2" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html#working-with-tidyr"><i class="fa fa-check"></i><b>2.2</b> working with tidyr</a></li>
+<li class="chapter" data-level="2.3" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html#dplyr"><i class="fa fa-check"></i><b>2.3</b> dplyr</a></li>
+<li class="chapter" data-level="2.4" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html#aufgabenblatt"><i class="fa fa-check"></i><b>2.4</b> Aufgabenblatt</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html#tidyr-arbeit"><i class="fa fa-check"></i><b>2.4.1</b> tidyr-arbeit:</a></li>
+<li class="chapter" data-level="2.4.2" data-path="der-tidyverse-approach.html"><a href="der-tidyverse-approach.html#dplyr-arbeit"><i class="fa fa-check"></i><b>2.4.2</b> dplyr-arbeit:</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html"><i class="fa fa-check"></i><b>3</b> tidyverse mit stringr, forcats, lubridate</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#stringr-paket"><i class="fa fa-check"></i><b>3.1</b> stringr-Paket</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#str_length"><i class="fa fa-check"></i><b>3.1.1</b> str_length()</a></li>
+<li class="chapter" data-level="3.1.2" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#str_c"><i class="fa fa-check"></i><b>3.1.2</b> str_c()</a></li>
+<li class="chapter" data-level="3.1.3" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#str_sub"><i class="fa fa-check"></i><b>3.1.3</b> str_sub()</a></li>
+<li class="chapter" data-level="3.1.4" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#str_sort"><i class="fa fa-check"></i><b>3.1.4</b> str_sort()</a></li>
+<li class="chapter" data-level="3.1.5" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#str_view"><i class="fa fa-check"></i><b>3.1.5</b> str_view()</a></li>
+<li class="chapter" data-level="3.1.6" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#str_detect"><i class="fa fa-check"></i><b>3.1.6</b> str_detect()</a></li>
+<li class="chapter" data-level="3.1.7" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#str_count"><i class="fa fa-check"></i><b>3.1.7</b> str_count()</a></li>
+<li class="chapter" data-level="3.1.8" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#beispiel"><i class="fa fa-check"></i><b>3.1.8</b> beispiel</a></li>
+<li class="chapter" data-level="3.1.9" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#regex-funktion"><i class="fa fa-check"></i><b>3.1.9</b> regex() funktion</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#forcats"><i class="fa fa-check"></i><b>3.2</b> forcats</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#factor"><i class="fa fa-check"></i><b>3.2.1</b> factor()</a></li>
+<li class="chapter" data-level="3.2.2" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#beispiel-einsatz"><i class="fa fa-check"></i><b>3.2.2</b> Beispiel Einsatz</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#lubridate"><i class="fa fa-check"></i><b>3.3</b> lubridate</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#ymd-mdy-dmy_hms"><i class="fa fa-check"></i><b>3.3.1</b> 1.ymd(), mdy(), dmy_hms()</a></li>
+<li class="chapter" data-level="3.3.2" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#make_date"><i class="fa fa-check"></i><b>3.3.2</b> 2. make_date()</a></li>
+<li class="chapter" data-level="3.3.3" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#aus-vorhandenene-datetimes"><i class="fa fa-check"></i><b>3.3.3</b> 3.aus vorhandenene datetimes</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#aufgabenblatt-3"><i class="fa fa-check"></i><b>3.4</b> Aufgabenblatt 3</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#aufgabe-1"><i class="fa fa-check"></i><b>3.4.1</b> Aufgabe 1</a></li>
+<li class="chapter" data-level="3.4.2" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#aufgabe-2"><i class="fa fa-check"></i><b>3.4.2</b> Aufgabe 2</a></li>
+<li class="chapter" data-level="3.4.3" data-path="tidyverse-mit-stringr-forcats-lubridate.html"><a href="tidyverse-mit-stringr-forcats-lubridate.html#aufgabe-3"><i class="fa fa-check"></i><b>3.4.3</b> Aufgabe 3</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ggplot.html"><a href="ggplot.html"><i class="fa fa-check"></i><b>4</b> ggplot</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="ggplot.html"><a href="ggplot.html#arten-von-plots"><i class="fa fa-check"></i><b>4.1</b> Arten von Plots</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="ggplot.html"><a href="ggplot.html#punktdiagramm"><i class="fa fa-check"></i><b>4.1.1</b> Punktdiagramm</a></li>
+<li class="chapter" data-level="4.1.2" data-path="ggplot.html"><a href="ggplot.html#säulen"><i class="fa fa-check"></i><b>4.1.2</b> Säulen:</a></li>
+<li class="chapter" data-level="4.1.3" data-path="ggplot.html"><a href="ggplot.html#histogramm"><i class="fa fa-check"></i><b>4.1.3</b> Histogramm</a></li>
+<li class="chapter" data-level="4.1.4" data-path="ggplot.html"><a href="ggplot.html#boxplot"><i class="fa fa-check"></i><b>4.1.4</b> Boxplot</a></li>
+<li class="chapter" data-level="4.1.5" data-path="ggplot.html"><a href="ggplot.html#violin"><i class="fa fa-check"></i><b>4.1.5</b> Violin</a></li>
+<li class="chapter" data-level="4.1.6" data-path="ggplot.html"><a href="ggplot.html#a"><i class="fa fa-check"></i><b>4.1.6</b> 1a)</a></li>
+<li class="chapter" data-level="4.1.7" data-path="ggplot.html"><a href="ggplot.html#b"><i class="fa fa-check"></i><b>4.1.7</b> 1b)</a></li>
+<li class="chapter" data-level="4.1.8" data-path="ggplot.html"><a href="ggplot.html#c"><i class="fa fa-check"></i><b>4.1.8</b> 1c)</a></li>
+<li class="chapter" data-level="4.1.9" data-path="ggplot.html"><a href="ggplot.html#d"><i class="fa fa-check"></i><b>4.1.9</b> 1d)</a></li>
+<li class="chapter" data-level="4.1.10" data-path="ggplot.html"><a href="ggplot.html#e"><i class="fa fa-check"></i><b>4.1.10</b> 1e)</a></li>
+<li class="chapter" data-level="4.1.11" data-path="ggplot.html"><a href="ggplot.html#f"><i class="fa fa-check"></i><b>4.1.11</b> 1f)</a></li>
+<li class="chapter" data-level="4.1.12" data-path="ggplot.html"><a href="ggplot.html#g"><i class="fa fa-check"></i><b>4.1.12</b> 1g)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="ggplot.html"><a href="ggplot.html#aufgabe-2-1"><i class="fa fa-check"></i><b>4.2</b> aufgabe 2</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="ggplot.html"><a href="ggplot.html#a-1"><i class="fa fa-check"></i><b>4.2.1</b> 2a)</a></li>
+<li class="chapter" data-level="4.2.2" data-path="ggplot.html"><a href="ggplot.html#f-1"><i class="fa fa-check"></i><b>4.2.2</b> 2f)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="schleifen.html"><a href="schleifen.html"><i class="fa fa-check"></i><b>5</b> Schleifen</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="schleifen.html"><a href="schleifen.html#if-else"><i class="fa fa-check"></i><b>5.1</b> if else</a></li>
+<li class="chapter" data-level="5.2" data-path="schleifen.html"><a href="schleifen.html#repeat"><i class="fa fa-check"></i><b>5.2</b> repeat</a></li>
+<li class="chapter" data-level="5.3" data-path="schleifen.html"><a href="schleifen.html#while"><i class="fa fa-check"></i><b>5.3</b> while</a></li>
+<li class="chapter" data-level="5.4" data-path="schleifen.html"><a href="schleifen.html#for"><i class="fa fa-check"></i><b>5.4</b> for</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="schleifen.html"><a href="schleifen.html#i-in-m-m-kann-beliebig-sein"><i class="fa fa-check"></i><b>5.4.1</b> i in m: m kann beliebig sein</a></li>
+<li class="chapter" data-level="5.4.2" data-path="schleifen.html"><a href="schleifen.html#praktische-anwendung-validierung"><i class="fa fa-check"></i><b>5.4.2</b> praktische Anwendung: Validierung</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="schleifen.html"><a href="schleifen.html#apply"><i class="fa fa-check"></i><b>5.5</b> apply</a></li>
+<li class="chapter" data-level="5.6" data-path="schleifen.html"><a href="schleifen.html#funktionen"><i class="fa fa-check"></i><b>5.6</b> funktionen</a></li>
+<li class="chapter" data-level="5.7" data-path="schleifen.html"><a href="schleifen.html#aufgabenblatt-1"><i class="fa fa-check"></i><b>5.7</b> Aufgabenblatt</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="schleifen.html"><a href="schleifen.html#a-2"><i class="fa fa-check"></i><b>5.7.1</b> a)</a></li>
+<li class="chapter" data-level="5.7.2" data-path="schleifen.html"><a href="schleifen.html#b-1"><i class="fa fa-check"></i><b>5.7.2</b> b)</a></li>
+<li class="chapter" data-level="5.7.3" data-path="schleifen.html"><a href="schleifen.html#c-1"><i class="fa fa-check"></i><b>5.7.3</b> c)</a></li>
+<li class="chapter" data-level="5.7.4" data-path="schleifen.html"><a href="schleifen.html#d-1"><i class="fa fa-check"></i><b>5.7.4</b> d)</a></li>
+<li class="chapter" data-level="5.7.5" data-path="schleifen.html"><a href="schleifen.html#e-1"><i class="fa fa-check"></i><b>5.7.5</b> e)</a></li>
+<li class="chapter" data-level="5.7.6" data-path="schleifen.html"><a href="schleifen.html#f-2"><i class="fa fa-check"></i><b>5.7.6</b> f)</a></li>
+<li class="chapter" data-level="5.7.7" data-path="schleifen.html"><a href="schleifen.html#g-1"><i class="fa fa-check"></i><b>5.7.7</b> g)</a></li>
+<li class="chapter" data-level="5.7.8" data-path="schleifen.html"><a href="schleifen.html#h"><i class="fa fa-check"></i><b>5.7.8</b> h)</a></li>
+<li class="chapter" data-level="5.7.9" data-path="schleifen.html"><a href="schleifen.html#i"><i class="fa fa-check"></i><b>5.7.9</b> i)</a></li>
+<li class="chapter" data-level="5.7.10" data-path="schleifen.html"><a href="schleifen.html#j"><i class="fa fa-check"></i><b>5.7.10</b> j)</a></li>
+<li class="chapter" data-level="5.7.11" data-path="schleifen.html"><a href="schleifen.html#k"><i class="fa fa-check"></i><b>5.7.11</b> k)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="clusteranalyse.html"><a href="clusteranalyse.html"><i class="fa fa-check"></i><b>6</b> Clusteranalyse</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="clusteranalyse.html"><a href="clusteranalyse.html#datensatz-tidyr"><i class="fa fa-check"></i><b>6.1</b> Datensatz Tidyr</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="clusteranalyse.html"><a href="clusteranalyse.html#umformung"><i class="fa fa-check"></i><b>6.1.1</b> Umformung</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="clusteranalyse.html"><a href="clusteranalyse.html#deskription"><i class="fa fa-check"></i><b>6.2</b> Deskription</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="clusteranalyse.html"><a href="clusteranalyse.html#kurze-analyse"><i class="fa fa-check"></i><b>6.2.1</b> kurze Analyse</a></li>
+<li class="chapter" data-level="6.2.2" data-path="clusteranalyse.html"><a href="clusteranalyse.html#zusammenhänge"><i class="fa fa-check"></i><b>6.2.2</b> Zusammenhänge</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="clusteranalyse.html"><a href="clusteranalyse.html#hierarchsiche-clusteranalyse"><i class="fa fa-check"></i><b>6.3</b> hierarchsiche Clusteranalyse</a></li>
+<li class="chapter" data-level="6.4" data-path="clusteranalyse.html"><a href="clusteranalyse.html#partitionierende-clusteranalyse"><i class="fa fa-check"></i><b>6.4</b> partitionierende Clusteranalyse</a></li>
+<li class="chapter" data-level="6.5" data-path="clusteranalyse.html"><a href="clusteranalyse.html#aufgabenblatt-2"><i class="fa fa-check"></i><b>6.5</b> Aufgabenblatt</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="lineare-regression.html"><a href="lineare-regression.html"><i class="fa fa-check"></i><b>7</b> Lineare Regression</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="lineare-regression.html"><a href="lineare-regression.html#packages-1"><i class="fa fa-check"></i><b>7.1</b> Packages</a></li>
+<li class="chapter" data-level="7.2" data-path="lineare-regression.html"><a href="lineare-regression.html#datensatz-deskription"><i class="fa fa-check"></i><b>7.2</b> Datensatz Deskription</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="lineare-regression.html"><a href="lineare-regression.html#beschreibung"><i class="fa fa-check"></i><b>7.2.1</b> Beschreibung</a></li>
+<li class="chapter" data-level="7.2.2" data-path="lineare-regression.html"><a href="lineare-regression.html#visualisieren"><i class="fa fa-check"></i><b>7.2.2</b> Visualisieren</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="lineare-regression.html"><a href="lineare-regression.html#regressionsanalyse-explorativ"><i class="fa fa-check"></i><b>7.3</b> Regressionsanalyse (explorativ)</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="lineare-regression.html"><a href="lineare-regression.html#die-regression"><i class="fa fa-check"></i><b>7.3.1</b> die Regression!</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="lineare-regression.html"><a href="lineare-regression.html#aufgabenblatt-4"><i class="fa fa-check"></i><b>7.4</b> Aufgabenblatt</a></li>
+<li class="chapter" data-level="7.5" data-path="lineare-regression.html"><a href="lineare-regression.html#lineares-modell"><i class="fa fa-check"></i><b>7.5</b> Lineares Modell</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html"><i class="fa fa-check"></i><b>8</b> Maschinelles Lernen / Data Mining</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#import-all-packages"><i class="fa fa-check"></i><b>8.1</b> Import all packages</a></li>
+<li class="chapter" data-level="8.2" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#datensatz-einlesen"><i class="fa fa-check"></i><b>8.2</b> Datensatz einlesen</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#beschreibung-1"><i class="fa fa-check"></i><b>8.2.1</b> Beschreibung</a></li>
+<li class="chapter" data-level="8.2.2" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#visualisieren-1"><i class="fa fa-check"></i><b>8.2.2</b> Visualisieren</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#lineare-diskriminanzanalyse"><i class="fa fa-check"></i><b>8.3</b> Lineare Diskriminanzanalyse</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#test-train"><i class="fa fa-check"></i><b>8.3.1</b> Test / Train</a></li>
+<li class="chapter" data-level="8.3.2" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#modelltrainierung"><i class="fa fa-check"></i><b>8.3.2</b> Modelltrainierung</a></li>
+<li class="chapter" data-level="8.3.3" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#bewertung-anhand-der-testdaten"><i class="fa fa-check"></i><b>8.3.3</b> Bewertung anhand der Testdaten</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#random-forest-methode"><i class="fa fa-check"></i><b>8.4</b> Random Forest Methode</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#bildung-mehrerer-entscheidungsbäume"><i class="fa fa-check"></i><b>8.4.1</b> Bildung mehrerer Entscheidungsbäume</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#neuronales-netzwerk"><i class="fa fa-check"></i><b>8.5</b> Neuronales Netzwerk</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#standardisierung-und-aufteilung-der-daten"><i class="fa fa-check"></i><b>8.5.1</b> Standardisierung und Aufteilung der Daten</a></li>
+<li class="chapter" data-level="8.5.2" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#trainieren-des-neuronalen-netzwerks"><i class="fa fa-check"></i><b>8.5.2</b> Trainieren des Neuronalen Netzwerks</a></li>
+<li class="chapter" data-level="8.5.3" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#evaluation"><i class="fa fa-check"></i><b>8.5.3</b> Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#h20"><i class="fa fa-check"></i><b>8.6</b> H20</a></li>
+<li class="chapter" data-level="8.7" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#aufgabenblatt-5"><i class="fa fa-check"></i><b>8.7</b> Aufgabenblatt</a>
+<ul>
+<li class="chapter" data-level="8.7.1" data-path="maschinelles-lernen-data-mining.html"><a href="maschinelles-lernen-data-mining.html#filtern-standardisieren-des-datensatzes"><i class="fa fa-check"></i><b>8.7.1</b> Filtern + Standardisieren des Datensatzes</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html"><i class="fa fa-check"></i><b>9</b> Soziale Netzwerkanalyse</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#imports"><i class="fa fa-check"></i><b>9.1</b> Imports</a></li>
+<li class="chapter" data-level="9.2" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#read-in-the-data-from-online-resource"><i class="fa fa-check"></i><b>9.2</b> Read in the Data from online Resource</a></li>
+<li class="chapter" data-level="9.3" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#tidying-desc"><i class="fa fa-check"></i><b>9.3</b> Tidying + Desc</a></li>
+<li class="chapter" data-level="9.4" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#network-creation"><i class="fa fa-check"></i><b>9.4</b> Network Creation</a></li>
+<li class="chapter" data-level="9.5" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#fragen-beschreibung"><i class="fa fa-check"></i><b>9.5</b> 5-Fragen-Beschreibung</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#size-wie-groß-ist-das-netzwerk"><i class="fa fa-check"></i><b>9.5.1</b> Size: Wie groß ist das Netzwerk?</a></li>
+<li class="chapter" data-level="9.5.2" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#density-wie-dicht-ist-das-netzwerks"><i class="fa fa-check"></i><b>9.5.2</b> Density: wie dicht ist das Netzwerks?</a></li>
+<li class="chapter" data-level="9.5.3" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#components-wie-viele-komponenten-gesamtnetzwerke-hat-das-netzwerk"><i class="fa fa-check"></i><b>9.5.3</b> Components: wie viele Komponenten (Gesamtnetzwerke) hat das Netzwerk?</a></li>
+<li class="chapter" data-level="9.5.4" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#compactness-wie-kompakt-ist-das-netzwerk"><i class="fa fa-check"></i><b>9.5.4</b> Compactness: wie kompakt ist das Netzwerk?</a></li>
+<li class="chapter" data-level="9.5.5" data-path="soziale-netzwerkanalyse.html"><a href="soziale-netzwerkanalyse.html#transitivität-wie-stark-tendiert-das-netzwerk-dazu-cluster-zu-bilden"><i class="fa fa-check"></i><b>9.5.5</b> Transitivität: wie stark tendiert das Netzwerk dazu Cluster zu bilden?</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="lineare-regression" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Lineare Regression</h1>
+<div id="packages-1" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Packages</h2>
+<div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="lineare-regression.html#cb337-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+</div>
+<div id="datensatz-deskription" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Datensatz Deskription</h2>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="lineare-regression.html#cb338-1" aria-hidden="true" tabindex="-1"></a>starwars <span class="ot">&lt;-</span> starwars</span></code></pre></div>
+<div id="beschreibung" class="section level3" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Beschreibung</h3>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="lineare-regression.html#cb339-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Augenfarbe ~ Masse</span></span>
+<span id="cb339-2"><a href="lineare-regression.html#cb339-2" aria-hidden="true" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> </span>
+<span id="cb339-3"><a href="lineare-regression.html#cb339-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(eye_color) <span class="sc">%&gt;%</span> </span>
+<span id="cb339-4"><a href="lineare-regression.html#cb339-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb339-5"><a href="lineare-regression.html#cb339-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_mass =</span> <span class="fu">mean</span>(mass, <span class="at">na.rm =</span> T)</span>
+<span id="cb339-6"><a href="lineare-regression.html#cb339-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## # A tibble: 15 × 2
+##    eye_color     avg_mass
+##    &lt;chr&gt;            &lt;dbl&gt;
+##  1 black             76.3
+##  2 blue              86.5
+##  3 blue-gray         77  
+##  4 brown             66.1
+##  5 dark             NaN  
+##  6 gold             NaN  
+##  7 green, yellow    159  
+##  8 hazel             66  
+##  9 orange           282. 
+## 10 pink             NaN  
+## 11 red               81.4
+## 12 red, blue        NaN  
+## 13 unknown           31.5
+## 14 white             48  
+## 15 yellow            81.1</code></pre>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="lineare-regression.html#cb341-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 5-Punkte (nach Gewicht)</span></span>
+<span id="cb341-2"><a href="lineare-regression.html#cb341-2" aria-hidden="true" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> </span>
+<span id="cb341-3"><a href="lineare-regression.html#cb341-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb341-4"><a href="lineare-regression.html#cb341-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(height)) <span class="sc">%&gt;%</span> </span>
+<span id="cb341-5"><a href="lineare-regression.html#cb341-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb341-6"><a href="lineare-regression.html#cb341-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_height =</span> <span class="fu">min</span>(height),</span>
+<span id="cb341-7"><a href="lineare-regression.html#cb341-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">q1_height =</span> <span class="fu">quantile</span>(height,<span class="fl">0.25</span>),</span>
+<span id="cb341-8"><a href="lineare-regression.html#cb341-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">med_height =</span> <span class="fu">quantile</span>(height,<span class="fl">0.5</span>),</span>
+<span id="cb341-9"><a href="lineare-regression.html#cb341-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">q3_height =</span> <span class="fu">quantile</span>(height, <span class="fl">0.75</span>),</span>
+<span id="cb341-10"><a href="lineare-regression.html#cb341-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_height =</span> <span class="fu">max</span>(height)</span>
+<span id="cb341-11"><a href="lineare-regression.html#cb341-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 6
+##   gender    min_height q1_height med_height q3_height
+##   &lt;chr&gt;          &lt;int&gt;     &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+## 1 feminine          96      162.       166.       172
+## 2 masculine         66      171.       183        193
+## 3 &lt;NA&gt;             178      180.       183        183
+## # … with 1 more variable: max_height &lt;int&gt;</code></pre>
+</div>
+<div id="visualisieren" class="section level3" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Visualisieren</h3>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="lineare-regression.html#cb343-1" aria-hidden="true" tabindex="-1"></a><span class="co">#erstmal eindeutschen</span></span>
+<span id="cb343-2"><a href="lineare-regression.html#cb343-2" aria-hidden="true" tabindex="-1"></a>starwars <span class="sc">%&gt;%</span> </span>
+<span id="cb343-3"><a href="lineare-regression.html#cb343-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gender =</span> <span class="fu">fct_recode</span>(gender,</span>
+<span id="cb343-4"><a href="lineare-regression.html#cb343-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Männlich&quot;</span> <span class="ot">=</span> <span class="st">&quot;masculine&quot;</span>,</span>
+<span id="cb343-5"><a href="lineare-regression.html#cb343-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Weiblich&quot;</span> <span class="ot">=</span> <span class="st">&quot;feminine&quot;</span>,</span>
+<span id="cb343-6"><a href="lineare-regression.html#cb343-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;nichts&quot;</span> <span class="ot">=</span> <span class="st">&quot;NA&quot;</span></span>
+<span id="cb343-7"><a href="lineare-regression.html#cb343-7" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span> </span>
+<span id="cb343-8"><a href="lineare-regression.html#cb343-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(height, gender)) <span class="sc">+</span></span>
+<span id="cb343-9"><a href="lineare-regression.html#cb343-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">na.rm =</span> T) <span class="sc">+</span></span>
+<span id="cb343-10"><a href="lineare-regression.html#cb343-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">stat=</span> <span class="st">&quot;summary&quot;</span>, <span class="at">fun =</span> <span class="st">&quot;mean&quot;</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb343-11"><a href="lineare-regression.html#cb343-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlab</span>(<span class="st">&quot;Größe in cm&quot;</span>)<span class="sc">+</span></span>
+<span id="cb343-12"><a href="lineare-regression.html#cb343-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;Geschlecht&quot;</span>) <span class="sc">+</span></span>
+<span id="cb343-13"><a href="lineare-regression.html#cb343-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">&quot;Boxplot der Größenverteilung nach Geschlecht&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: Unknown levels in `f`: NA</code></pre>
+<pre><code>## Warning: Removed 6 rows containing non-finite values
+## (stat_summary).</code></pre>
+<p><img src="tutorium_files/figure-html/unnamed-chunk-142-1.png" width="672" /></p>
+</div>
+</div>
+<div id="regressionsanalyse-explorativ" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Regressionsanalyse (explorativ)</h2>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="lineare-regression.html#cb346-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="ot">&lt;-</span> diamonds</span>
+<span id="cb346-2"><a href="lineare-regression.html#cb346-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb346-3"><a href="lineare-regression.html#cb346-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diamonds)</span></code></pre></div>
+<pre><code>##      carat               cut        color    
+##  Min.   :0.2000   Fair     : 1610   D: 6775  
+##  1st Qu.:0.4000   Good     : 4906   E: 9797  
+##  Median :0.7000   Very Good:12082   F: 9542  
+##  Mean   :0.7979   Premium  :13791   G:11292  
+##  3rd Qu.:1.0400   Ideal    :21551   H: 8304  
+##  Max.   :5.0100                     I: 5422  
+##                                     J: 2808  
+##     clarity          depth           table      
+##  SI1    :13065   Min.   :43.00   Min.   :43.00  
+##  VS2    :12258   1st Qu.:61.00   1st Qu.:56.00  
+##  SI2    : 9194   Median :61.80   Median :57.00  
+##  VS1    : 8171   Mean   :61.75   Mean   :57.46  
+##  VVS2   : 5066   3rd Qu.:62.50   3rd Qu.:59.00  
+##  VVS1   : 3655   Max.   :79.00   Max.   :95.00  
+##  (Other): 2531                                  
+##      price             x                y         
+##  Min.   :  326   Min.   : 0.000   Min.   : 0.000  
+##  1st Qu.:  950   1st Qu.: 4.710   1st Qu.: 4.720  
+##  Median : 2401   Median : 5.700   Median : 5.710  
+##  Mean   : 3933   Mean   : 5.731   Mean   : 5.735  
+##  3rd Qu.: 5324   3rd Qu.: 6.540   3rd Qu.: 6.540  
+##  Max.   :18823   Max.   :10.740   Max.   :58.900  
+##                                                   
+##        z         
+##  Min.   : 0.000  
+##  1st Qu.: 2.910  
+##  Median : 3.530  
+##  Mean   : 3.539  
+##  3rd Qu.: 4.040  
+##  Max.   :31.800  
+## </code></pre>
+<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="lineare-regression.html#cb348-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">%&gt;%</span> </span>
+<span id="cb348-2"><a href="lineare-regression.html#cb348-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(carat,price)) <span class="sc">+</span></span>
+<span id="cb348-3"><a href="lineare-regression.html#cb348-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<p><img src="tutorium_files/figure-html/unnamed-chunk-143-1.png" width="672" /></p>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="lineare-regression.html#cb349-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">%&gt;%</span> </span>
+<span id="cb349-2"><a href="lineare-regression.html#cb349-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(price)) <span class="sc">%&gt;%</span> </span>
+<span id="cb349-3"><a href="lineare-regression.html#cb349-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(color, price)) <span class="sc">+</span></span>
+<span id="cb349-4"><a href="lineare-regression.html#cb349-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb349-5"><a href="lineare-regression.html#cb349-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">stat=</span><span class="st">&quot;summary&quot;</span>, <span class="at">fun=</span>mean, <span class="at">color=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="tutorium_files/figure-html/unnamed-chunk-143-2.png" width="672" /></p>
+<div id="die-regression" class="section level3" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> die Regression!</h3>
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="lineare-regression.html#cb350-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Zusammenhang Preis Carat</span></span>
+<span id="cb350-2"><a href="lineare-regression.html#cb350-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb350-3"><a href="lineare-regression.html#cb350-3" aria-hidden="true" tabindex="-1"></a>m0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> carat, <span class="at">data =</span> diamonds)</span>
+<span id="cb350-4"><a href="lineare-regression.html#cb350-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m0)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = price ~ carat, data = diamonds)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -18585.3   -804.8    -18.9    537.4  12731.7 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -2256.36      13.06  -172.8   &lt;2e-16 ***
+## carat        7756.43      14.07   551.4   &lt;2e-16 ***
+## ---
+## Signif. codes:  
+## 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1549 on 53938 degrees of freedom
+## Multiple R-squared:  0.8493, Adjusted R-squared:  0.8493 
+## F-statistic: 3.041e+05 on 1 and 53938 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="lineare-regression.html#cb352-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m0)</span></code></pre></div>
+<p><img src="tutorium_files/figure-html/unnamed-chunk-144-1.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-144-2.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-144-3.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-144-4.png" width="672" /></p>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="lineare-regression.html#cb353-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price) <span class="sc">~</span>carat, <span class="at">data =</span> diamonds)</span>
+<span id="cb353-2"><a href="lineare-regression.html#cb353-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(price) ~ carat, data = diamonds)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.2844 -0.2449  0.0335  0.2578  1.5642 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 6.215021   0.003348    1856   &lt;2e-16 ***
+## carat       1.969757   0.003608     546   &lt;2e-16 ***
+## ---
+## Signif. codes:  
+## 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.3972 on 53938 degrees of freedom
+## Multiple R-squared:  0.8468, Adjusted R-squared:  0.8468 
+## F-statistic: 2.981e+05 on 1 and 53938 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="lineare-regression.html#cb355-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lineares modell mit polynomen</span></span>
+<span id="cb355-2"><a href="lineare-regression.html#cb355-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(price) <span class="sc">~</span> <span class="fu">I</span>(<span class="fu">poly</span>(carat, <span class="at">degree =</span> <span class="dv">3</span>)), <span class="at">data =</span> diamonds)</span>
+<span id="cb355-3"><a href="lineare-regression.html#cb355-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(price) ~ I(poly(carat, degree = 3)), data = diamonds)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.06032 -0.17452  0.00001  0.17349  1.27814 
+## 
+## Coefficients:
+##                              Estimate Std. Error
+## (Intercept)                   7.78677    0.00111
+## I(poly(carat, degree = 3))1 216.84668    0.25786
+## I(poly(carat, degree = 3))2 -67.76529    0.25786
+## I(poly(carat, degree = 3))3  18.16637    0.25786
+##                             t value Pr(&gt;|t|)    
+## (Intercept)                 7013.42   &lt;2e-16 ***
+## I(poly(carat, degree = 3))1  840.95   &lt;2e-16 ***
+## I(poly(carat, degree = 3))2 -262.80   &lt;2e-16 ***
+## I(poly(carat, degree = 3))3   70.45   &lt;2e-16 ***
+## ---
+## Signif. codes:  
+## 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2579 on 53936 degrees of freedom
+## Multiple R-squared:  0.9354, Adjusted R-squared:  0.9354 
+## F-statistic: 2.604e+05 on 3 and 53936 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="lineare-regression.html#cb357-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2)</span></code></pre></div>
+<p><img src="tutorium_files/figure-html/unnamed-chunk-145-1.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-145-2.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-145-3.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-145-4.png" width="672" /></p>
+</div>
+</div>
+<div id="aufgabenblatt-4" class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> Aufgabenblatt</h2>
+<ol style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="lineare-regression.html#cb358-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb358-2"><a href="lineare-regression.html#cb358-2" aria-hidden="true" tabindex="-1"></a>swiss <span class="ot">&lt;-</span> swiss</span>
+<span id="cb358-3"><a href="lineare-regression.html#cb358-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb358-4"><a href="lineare-regression.html#cb358-4" aria-hidden="true" tabindex="-1"></a><span class="co"># a)</span></span>
+<span id="cb358-5"><a href="lineare-regression.html#cb358-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(swiss)</span></code></pre></div>
+<pre><code>##    Fertility      Agriculture     Examination   
+##  Min.   :35.00   Min.   : 1.20   Min.   : 3.00  
+##  1st Qu.:64.70   1st Qu.:35.90   1st Qu.:12.00  
+##  Median :70.40   Median :54.10   Median :16.00  
+##  Mean   :70.14   Mean   :50.66   Mean   :16.49  
+##  3rd Qu.:78.45   3rd Qu.:67.65   3rd Qu.:22.00  
+##  Max.   :92.50   Max.   :89.70   Max.   :37.00  
+##    Education        Catholic       Infant.Mortality
+##  Min.   : 1.00   Min.   :  2.150   Min.   :10.80   
+##  1st Qu.: 6.00   1st Qu.:  5.195   1st Qu.:18.15   
+##  Median : 8.00   Median : 15.140   Median :20.00   
+##  Mean   :10.98   Mean   : 41.144   Mean   :19.94   
+##  3rd Qu.:12.00   3rd Qu.: 93.125   3rd Qu.:21.70   
+##  Max.   :53.00   Max.   :100.000   Max.   :26.60</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="lineare-regression.html#cb360-1" aria-hidden="true" tabindex="-1"></a><span class="co"># b)</span></span>
+<span id="cb360-2"><a href="lineare-regression.html#cb360-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Streuung</span></span>
+<span id="cb360-3"><a href="lineare-regression.html#cb360-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">stack</span>(swiss), <span class="fu">aes</span>(ind, values)) <span class="sc">+</span></span>
+<span id="cb360-4"><a href="lineare-regression.html#cb360-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb360-5"><a href="lineare-regression.html#cb360-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">stat=</span><span class="st">&quot;summary&quot;</span>, <span class="at">fun=</span><span class="st">&quot;mean&quot;</span>, <span class="at">color=</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="tutorium_files/figure-html/unnamed-chunk-147-1.png" width="672" /></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="lineare-regression.html#cb361-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb361-2"><a href="lineare-regression.html#cb361-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb361-3"><a href="lineare-regression.html#cb361-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(swiss)</span></code></pre></div>
+<pre><code>## plot: [1,1] [&gt;-------------------------] 3% est: 0s
+## plot: [1,2] [&gt;-------------------------] 6% est: 1s
+## plot: [1,3] [=&gt;------------------------] 8% est: 1s
+## plot: [1,4] [==&gt;-----------------------] 11% est: 1s
+## plot: [1,5] [===&gt;----------------------] 14% est: 1s
+## plot: [1,6] [===&gt;----------------------] 17% est: 1s
+## plot: [2,1] [====&gt;---------------------] 19% est: 1s
+## plot: [2,2] [=====&gt;--------------------] 22% est: 1s
+## plot: [2,3] [=====&gt;--------------------] 25% est: 1s
+## plot: [2,4] [======&gt;-------------------] 28% est: 1s
+## plot: [2,5] [=======&gt;------------------] 31% est: 1s
+## plot: [2,6] [========&gt;-----------------] 33% est: 1s
+## plot: [3,1] [========&gt;-----------------] 36% est: 1s
+## plot: [3,2] [=========&gt;----------------] 39% est: 1s
+## plot: [3,3] [==========&gt;---------------] 42% est: 1s
+## plot: [3,4] [===========&gt;--------------] 44% est: 1s
+## plot: [3,5] [===========&gt;--------------] 47% est: 1s
+## plot: [3,6] [============&gt;-------------] 50% est: 1s
+## plot: [4,1] [=============&gt;------------] 53% est: 1s
+## plot: [4,2] [=============&gt;------------] 56% est: 1s
+## plot: [4,3] [==============&gt;-----------] 58% est: 1s
+## plot: [4,4] [===============&gt;----------] 61% est: 1s
+## plot: [4,5] [================&gt;---------] 64% est: 0s
+## plot: [4,6] [================&gt;---------] 67% est: 0s
+## plot: [5,1] [=================&gt;--------] 69% est: 0s
+## plot: [5,2] [==================&gt;-------] 72% est: 0s
+## plot: [5,3] [===================&gt;------] 75% est: 0s
+## plot: [5,4] [===================&gt;------] 78% est: 0s
+## plot: [5,5] [====================&gt;-----] 81% est: 0s
+## plot: [5,6] [=====================&gt;----] 83% est: 0s
+## plot: [6,1] [=====================&gt;----] 86% est: 0s
+## plot: [6,2] [======================&gt;---] 89% est: 0s
+## plot: [6,3] [=======================&gt;--] 92% est: 0s
+## plot: [6,4] [========================&gt;-] 94% est: 0s
+## plot: [6,5] [========================&gt;-] 97% est: 0s
+## plot: [6,6] [==========================]100% est: 0s</code></pre>
+<p><img src="tutorium_files/figure-html/unnamed-chunk-148-1.png" width="672" /></p>
+</div>
+<div id="lineares-modell" class="section level2" number="7.5">
+<h2><span class="header-section-number">7.5</span> Lineares Modell</h2>
+<p>benötigt: passende Variablen
+Methodne zur Variablenselektion <a href="https://www.ruhr-uni-bochum.de/imperia/md/content/mathematik3/lehre/ss10/methodenlehre2/teil219062010.pdf">hier</a> S. 96</p>
+<p>Vorwärtsverfahren:
+- Variable mit höchster Korrelation auswählen und R^2 testen
+- immer weiter Variablen hinzufügen und R^2 testen
+- solange R^2 Veränderung signifikant ist : weitermachen</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="lineare-regression.html#cb363-1" aria-hidden="true" tabindex="-1"></a><span class="co"># education</span></span>
+<span id="cb363-2"><a href="lineare-regression.html#cb363-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Fertility <span class="sc">~</span> Education, <span class="at">data=</span> swiss)</span>
+<span id="cb363-3"><a href="lineare-regression.html#cb363-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)<span class="sc">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.4406156</code></pre>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="lineare-regression.html#cb365-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R^2 = 0.44</span></span></code></pre></div>
+<p>R^2 hier nur 44% (44% der Variation kann dadurch erklärt werden)</p>
+<p>-&gt; multi lineares Modell testen mit weiteren Variabln</p>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="lineare-regression.html#cb366-1" aria-hidden="true" tabindex="-1"></a><span class="co"># weitere Variable Catholic</span></span>
+<span id="cb366-2"><a href="lineare-regression.html#cb366-2" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Fertility <span class="sc">~</span> Education<span class="sc">+</span>Catholic, <span class="at">data=</span> swiss)</span>
+<span id="cb366-3"><a href="lineare-regression.html#cb366-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)<span class="sc">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.5745071</code></pre>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="lineare-regression.html#cb368-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R^2 =&gt; 0.57</span></span>
+<span id="cb368-2"><a href="lineare-regression.html#cb368-2" aria-hidden="true" tabindex="-1"></a><span class="co"># delta R^2 = 0.11 (gut!)</span></span>
+<span id="cb368-3"><a href="lineare-regression.html#cb368-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb368-4"><a href="lineare-regression.html#cb368-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Agriculture</span></span>
+<span id="cb368-5"><a href="lineare-regression.html#cb368-5" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Fertility <span class="sc">~</span> Education<span class="sc">+</span>Catholic<span class="sc">+</span>Agriculture, <span class="at">data=</span> swiss)</span>
+<span id="cb368-6"><a href="lineare-regression.html#cb368-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model3)<span class="sc">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.6422541</code></pre>
+<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb370-1"><a href="lineare-regression.html#cb370-1" aria-hidden="true" tabindex="-1"></a><span class="co"># R^2 = 0.64</span></span>
+<span id="cb370-2"><a href="lineare-regression.html#cb370-2" aria-hidden="true" tabindex="-1"></a><span class="co"># delta R^2 = 0,07 (auch gut!)</span></span>
+<span id="cb370-3"><a href="lineare-regression.html#cb370-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb370-4"><a href="lineare-regression.html#cb370-4" aria-hidden="true" tabindex="-1"></a>model4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Fertility <span class="sc">~</span> Education<span class="sc">+</span>Catholic<span class="sc">+</span>Agriculture<span class="sc">+</span>Examination, <span class="at">data=</span> swiss)</span>
+<span id="cb370-5"><a href="lineare-regression.html#cb370-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model4)<span class="sc">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.6497897</code></pre>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="lineare-regression.html#cb372-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r^2 ändert sich fast nicht</span></span></code></pre></div>
+<p>also Model3 oder model2</p>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="lineare-regression.html#cb373-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model2) <span class="co">#besser bei panel 2+4</span></span></code></pre></div>
+<p><img src="tutorium_files/figure-html/unnamed-chunk-151-1.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-151-2.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-151-3.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-151-4.png" width="672" /></p>
+<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb374-1"><a href="lineare-regression.html#cb374-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model3)</span></code></pre></div>
+<p><img src="tutorium_files/figure-html/unnamed-chunk-151-5.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-151-6.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-151-7.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-151-8.png" width="672" /></p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="lineare-regression.html#cb375-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(Fertility) <span class="sc">~</span> Education, <span class="at">data=</span> swiss)</span>
+<span id="cb375-2"><a href="lineare-regression.html#cb375-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(Fertility) ~ Education, data = swiss)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.25727 -0.08868 -0.04285  0.12762  0.24865 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  4.396825   0.030110 146.024  &lt; 2e-16 ***
+## Education   -0.014919   0.002073  -7.198  5.2e-09 ***
+## ---
+## Signif. codes:  
+## 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.1352 on 45 degrees of freedom
+## Multiple R-squared:  0.5351, Adjusted R-squared:  0.5248 
+## F-statistic:  51.8 on 1 and 45 DF,  p-value: 5.195e-09</code></pre>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="lineare-regression.html#cb377-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r^2 0.57 &gt; 0.44 </span></span>
+<span id="cb377-2"><a href="lineare-regression.html#cb377-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1)</span></code></pre></div>
+<p><img src="tutorium_files/figure-html/unnamed-chunk-152-1.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-152-2.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-152-3.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-152-4.png" width="672" /></p>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb378-1"><a href="lineare-regression.html#cb378-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(Fertility) <span class="sc">~</span> Education<span class="sc">+</span>Catholic, <span class="at">data=</span> swiss)</span>
+<span id="cb378-2"><a href="lineare-regression.html#cb378-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2)<span class="sc">$</span>r.squared <span class="co">#r^2 = 0.61 &gt; 0.57</span></span></code></pre></div>
+<pre><code>## [1] 0.6163616</code></pre>
+<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb380-1"><a href="lineare-regression.html#cb380-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2)</span></code></pre></div>
+<p><img src="tutorium_files/figure-html/unnamed-chunk-152-5.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-152-6.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-152-7.png" width="672" /><img src="tutorium_files/figure-html/unnamed-chunk-152-8.png" width="672" /></p>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="lineare-regression.html#cb381-1" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(Fertility <span class="sc">~</span> Education<span class="sc">+</span>Catholic<span class="sc">+</span>Agriculture, <span class="at">data=</span> swiss)</span>
+<span id="cb381-2"><a href="lineare-regression.html#cb381-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m3)<span class="sc">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.6422541</code></pre>
+<ol start="5" style="list-style-type: lower-alpha">
+<li></li>
+</ol>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="lineare-regression.html#cb383-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(robustbase)</span>
+<span id="cb383-2"><a href="lineare-regression.html#cb383-2" aria-hidden="true" tabindex="-1"></a>model_robust <span class="ot">&lt;-</span> <span class="fu">lmrob</span>(<span class="fu">log</span>(Fertility) <span class="sc">~</span> Education, <span class="at">data=</span> swiss)</span>
+<span id="cb383-3"><a href="lineare-regression.html#cb383-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_robust)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lmrob(formula = log(Fertility) ~ Education, data = swiss)
+##  \--&gt; method = &quot;MM&quot;
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.25564 -0.08674 -0.04180  0.12940  0.25139 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  4.396133   0.029191  150.60  &lt; 2e-16 ***
+## Education   -0.015075   0.002013   -7.49 1.92e-09 ***
+## ---
+## Signif. codes:  
+## 0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Robust residual standard error: 0.1471 
+## Multiple R-squared:  0.5152, Adjusted R-squared:  0.5044 
+## Convergence in 7 IRWLS iterations
+## 
+## Robustness weights: 
+##  one weight is ~= 1. The remaining 46 ones are summarized as
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.7438  0.8798  0.9614  0.9276  0.9890  0.9987 
+## Algorithmic parameters: 
+##        tuning.chi                bb        tuning.psi 
+##         1.548e+00         5.000e-01         4.685e+00 
+##        refine.tol           rel.tol         scale.tol 
+##         1.000e-07         1.000e-07         1.000e-10 
+##         solve.tol       eps.outlier             eps.x 
+##         1.000e-07         2.128e-03         9.641e-11 
+## warn.limit.reject warn.limit.meanrw 
+##         5.000e-01         5.000e-01 
+##      nResample         max.it       best.r.s 
+##            500             50              2 
+##       k.fast.s          k.max    maxit.scale 
+##              1            200            200 
+##      trace.lev            mts     compute.rd 
+##              0           1000              0 
+## fast.s.large.n 
+##           2000 
+##                   psi           subsampling 
+##            &quot;bisquare&quot;         &quot;nonsingular&quot; 
+##                   cov compute.outlier.stats 
+##         &quot;.vcov.avar1&quot;                  &quot;SM&quot; 
+## seed : int(0)</code></pre>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="lineare-regression.html#cb385-1" aria-hidden="true" tabindex="-1"></a><span class="co">#R^2 = 0.51 &gt; 0.57 von davor</span></span></code></pre></div>
+<p>Berechnung (aus <code>lmrob</code>) : MM-type Methode im Gegensatz zur least-squares Methode
+verbessert R^2 Ergebnis aber nicht, und Rest kann ich nicht bewerten</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="clusteranalyse.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="maschinelles-lernen-data-mining.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/skriptum/tutorium-r/edit/master/2021-12-13-Linear.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/skriptum/tutorium-r/blob/master/2021-12-13-Linear.Rmd",
+"text": null
+},
+"download": ["https://github.com/skriptum/tutorium-r/raw/master/2021-12-13-Linear.Rmd"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,11 +1,8 @@
 ---
-title: "R-Tutorium"
-author: "Marten Walk"
-date: "2022-02-01"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 ---
-# Startseite
+# Tutorium R-Language {-}
 
 Wilkommen auf dieser Website über das R-Tutorium im WS2021/22. Diese Seite basiert 
 auf *RMarkdown* Dokumenten und wird mithilfe von `bookdown` gerendert. 
@@ -15,4 +12,29 @@ auf *RMarkdown* Dokumenten und wird mithilfe von `bookdown` gerendert.
 - Modul: R-Tutorium 2021/22 
 - Uni: Martin-Luther-Universität Halle
 - Dozent: Christoph Herrmann
-- Autor: Marten Walk
+
+## Erklärung
+
+Im Wintersemester 2021 habe ich das Tutorium in R belegt und sowieso alles in RMarkdown
+mitgeschrieben. Diese Dateien lassen sich mit verschiedenen Paketen sehr einfach in 
+Websites umschreiben, beispielsweise mit dem hier gentuzten `bookdown`. Das alles wurde auf
+[Github](github.com) hochgeladen. Alle Dateien lassen sich in [diesem Repo](https://github.com/skriptum/tutorium-r) finden. Dann wird das ganze mithilfe von Github 
+Pages als Website dargestellt. 
+
+## References
+
+JJ Allaire and Yihui Xie and Jonathan McPherson
+and Javier Luraschi and Kevin Ushey and Aron
+Atkins and Hadley Wickham and Joe Cheng and
+Winston Chang and Richard Iannone (2021).
+rmarkdown: Dynamic Documents for R. R package
+version 2.11. URL
+https://rmarkdown.rstudio.com
+
+
+Yihui Xie (2021). bookdown: Authoring Books and
+Technical Documents with R Markdown. R package
+version 0.24.
+
+
+  

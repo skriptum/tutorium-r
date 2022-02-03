@@ -1,4 +1,4 @@
-# 19.11.21 ggplot
+# ggplot
 
 **Vorteil ggplot:** nicht vordefinierte Grafiken, sondern Zusammensetzung vieler Layers
 

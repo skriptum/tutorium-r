@@ -3,7 +3,7 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li class="toc-logo"><a href="./"><img src="https://cdn.freebiesupply.com/logos/thumbs/1x/r-lang-logo.png" style="border-radius: 50%;" ></a></li>
+        <li class="toc-logo"><a href="./"><img src="logo.png" style="border-radius: 50%;" ></a></li>
       collapse: section
       scroll_highlight: true
       after: null
@@ -11,7 +11,7 @@ bookdown::gitbook:
       position: fixed
     edit : null
     search:
-      engine: lunr # or fuse
+      engine: fuse # or fuse
       # options to control/tune search engine behavior (for
       # fuse.js, refer to https://fusejs.io/api/options.html)
       options: null
@@ -19,9 +19,9 @@ bookdown::gitbook:
       theme: white
       family: sans
       size: 2
-    download: ["rmd", "pdf"]
+    download: ["rmd"]
     sharing:
       github: yes
       facebook: no
-      twitter: yes
+      twitter: no
       all: no

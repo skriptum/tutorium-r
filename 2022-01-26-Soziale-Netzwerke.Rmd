@@ -1,4 +1,4 @@
-# 26.01.22 Soziale Netzwerkanalyse
+# Soziale Netzwerkanalyse
 
 ## Imports
 
@@ -14,7 +14,7 @@ library(igraph)
 
 ```{r}
 # df <- read_csv("https://github.com/tdenzl/MarvelNetwork/raw/main/data/hero-network.csv")
-# write_csv(df, "data/hero_network.csv")
+# write_csv(df, "data/hero-network.csv")
 ```
 
 Read in from */data* after first step
